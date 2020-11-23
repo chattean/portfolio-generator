@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { resolve } = require('path');
 
 const writeFile = fileContent => {
     return new Promise((resolve, reject) => {
@@ -22,10 +23,18 @@ const writeFile = fileContent => {
 
 const copyFile = () => {
     return new Promise((resolve, reject) => {
-        fs.copyFile('./dist/index.html', './')
-
+        fs.copyFile('./src/style.css', './dist/style.css', err => { 
+            if (err){
+                reject(err);
+                return;
+            }
+            resolve({
+                ok: true, 
+                message: 'File Copied!'
+            });
+        });
     });
-};
+}
   // demo HTML code
 const sampleHtml = '<h1>This will be written to the file!</h1>';
 
@@ -38,3 +47,12 @@ writeFile(sampleHtml)
     // this will run when we use `reject()`
     console.log(errorResponse);
   });
+
+  // OLd JS
+//   module.exports = {
+//     writeFile: writeFile,
+//     copyFile: copyFile
+//   };
+
+  //ES6
+  module.exports = { writeFile, copyFile };
